@@ -1,10 +1,11 @@
-//import './App.css';
+import "./App.css";
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
+import MessageInterface from "./Components/MessageInterface/MessageInterface";
 
 function App() {
   const [socket, setSocket] = useState(null);
-  const [socketConnected, socketSocketConnected] = useState(false);
+  const [socketConnected, setSocketConnected] = useState(false);
   const [messageStream, setMessageStream] = useState([]);
 
   useEffect(() => {
@@ -15,19 +16,28 @@ function App() {
     if (!socket) return;
 
     socket.on("connect", () => {
-      socketSocketConnected(socket.connected);
+      setSocketConnected(socket.connected);
     });
 
     socket.on("disconnect", () => {
-      socketSocketConnected(socket.connected);
+      console.log("disconnected");
+      setSocketConnected(socket.connected);
     });
 
     socket.on("message", (incomingMsg) => {
+      console.log(incomingMsg);
       setMessageStream([...messageStream, incomingMsg]);
+      console.log(messageStream);
     });
   }, [socket, messageStream]);
 
-  return <div></div>;
+  console.log(socketConnected);
+
+  return (
+    <div>
+      <MessageInterface socket={socket} messageStream={messageStream} />
+    </div>
+  );
 }
 
 export default App;
