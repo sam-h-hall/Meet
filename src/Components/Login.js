@@ -5,8 +5,11 @@ const Login = () => {
   const [loggedIn, setLoggedIn] = useState([]);
 
   return (
-    <div className="flex border-2 h-screen max-h-screen items-center justify-center">
-      <form className="flex flex-col justify-around  border-2 border-red-200 items-center h-32 w-80">
+    <div className="flex flex-col h-screen max-h-screen items-center justify-center">
+      <h1 className="font-lobster text-4xl border-purple-700 bg-purple-700 border-2 w-80 text-center rounded-t-md">
+        Meet
+      </h1>
+      <form className="flex flex-col justify-around border-l-2 border-r-2 border-b-2 items-center h-32 w-80 rounded-b-md pt-3">
         <input
           id="username"
           className="border-2 border-gray-200 w-60 rounded-md"
