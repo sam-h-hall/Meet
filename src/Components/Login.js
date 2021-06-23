@@ -4,6 +4,21 @@ import { useForm } from "react-hook-form";
 const Login = () => {
   const [loggedIn, setLoggedIn] = useState([]);
 
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
+  const submit = ({ credentials }) => {
+    if (credentials) {
+      console.log(credentials);
+    } else {
+      return;
+    }
+  };
+
   return (
     <div className="flex flex-col h-screen max-h-screen items-center justify-center">
       <h1 className="font-lobster text-4xl border-purple-700 bg-purple-700 border-2 w-80 text-center rounded-t-md">
