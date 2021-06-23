@@ -24,11 +24,14 @@ const MessageBar = ({ socket }) => {
         className="flex flex-row max-w-full place-self-end space-x-4 p-2"
         onSubmit={handleSubmit(submit)}
       >
-        <input
-          className="flex-grow border-solid border-2 rounded-md"
+        <span
+          autoFocus="true"
+          contentEditable="true"
+          className="flex-grow border-solid border-2 rounded-md pl-1 overflow-visible"
           id="input"
           autoComplete="off"
           {...register("message")}
+          placeholder="Send message..."
         />
         <button
           className="text-red-50 bg-blue-500 w-20 rounded-md"
