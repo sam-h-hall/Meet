@@ -2,6 +2,9 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
 import MessageInterface from "./Components/MessageInterface/MessageInterface";
+import TitleBar from "./Components/TitleBar";
+import Login from "./Components/Login";
+import { Route, Switch, Link } from "react-router-dom";
 
 function App() {
   const [socket, setSocket] = useState(null);
@@ -35,7 +38,16 @@ function App() {
 
   return (
     <div>
-      <MessageInterface socket={socket} messageStream={messageStream} />
+      {/*<Login /> */}
+      <TitleBar />
+      {/*<MessageInterface socket={socket} messageStream={messageStream} />*/}
+
+      <Switch>
+        <Route path="/login" component={Login} />
+        <Route exact path="/">
+          <MessageInterface socket={socket} messageStream={messageStream} />
+        </Route>
+      </Switch>
     </div>
   );
 }
