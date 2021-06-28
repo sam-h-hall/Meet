@@ -24,9 +24,9 @@ const MessageBar = ({ socket }) => {
         className="flex flex-row max-w-full place-self-end space-x-4 p-2"
         onSubmit={handleSubmit(submit)}
       >
-        <span
-          autoFocus="true"
-          contentEditable="true"
+        <input
+          autoFocus={true}
+          contentEditable={true}
           className="flex-grow border-solid border-2 rounded-md pl-1 overflow-visible"
           id="input"
           autoComplete="off"

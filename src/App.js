@@ -5,6 +5,7 @@ import MessageInterface from "./Components/MessageInterface/MessageInterface";
 import TitleBar from "./Components/TitleBar";
 import Login from "./Components/Login";
 import { Route, Switch, Link } from "react-router-dom";
+import Register from "./Components/Register";
 
 function App() {
   const [socket, setSocket] = useState(null);
@@ -43,7 +44,7 @@ function App() {
       {/*<MessageInterface socket={socket} messageStream={messageStream} />*/}
 
       <Switch>
-        <Route path="/login" component={Login} />
+        <Route path="/login" component={Register} />
         <Route exact path="/">
           <MessageInterface socket={socket} messageStream={messageStream} />
         </Route>
