@@ -2,17 +2,29 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Axios from "axios";
 import { Link } from "react-router-dom";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 const Login = () => {
   const [loggedIn, setLoggedIn] = useState([]);
   const inputStyle = "border-2 border-gray-200 w-60 rounded-md pl-1";
+  const errorStyle = "text-red-500 text-sm";
+
+  const validationSchema = yup.object().shape({
+    username: yup.string().required("*username required"),
+    password: yup.string().required("*password required"),
+  });
 
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    mode: "onTouched",
+    resolver: yupResolver(validationSchema),
+    defaultValues: { username: "", password: "" },
+  });
 
   const submit = (credentials) => {
     if (credentials) {
@@ -46,6 +58,9 @@ const Login = () => {
               required: "username required",
             })}
           />
+          {errors.username && (
+            <p className={errorStyle}>{errors.username.message}</p>
+          )}
         </div>
 
         <div className="mb-4">
@@ -57,12 +72,23 @@ const Login = () => {
               required: "username is required",
             })}
           />
+          {errors.password && (
+            <p className={errorStyle}>{errors.password.message}</p>
+          )}
         </div>
 
         <button className="bg-blue-400 w-60 rounded-md mb-1" type="submit">
           Login
         </button>
       </form>
+      <div>
+        <p>
+          Not a member?{" "}
+          <Link className="underline" to="/register">
+            Register
+          </Link>
+        </p>
+      </div>
     </div>
   );
 };
