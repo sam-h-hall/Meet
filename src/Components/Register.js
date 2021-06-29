@@ -19,10 +19,6 @@ const Register = () => {
       .required("*passwords do not match")
       .oneOf([yup.ref("password"), null], "*passwords do not match"),
   });
-  //schema.validate({}).catch((err) => {
-  //console.log(err.message);
-  //console.log(err.errors);
-  //});
 
   const initialValues = {
     username: "",
@@ -41,17 +37,6 @@ const Register = () => {
     resolver: yupResolver(validationSchema),
     defaultValues: { initialValues },
   });
-
-  useEffect(() => {
-    Axios.get("http://localhost:8000")
-      .then((res) => {
-        console.log(res.data);
-        reset({
-          initialValues,
-        });
-      })
-      .catch((err) => console.log("get req: ", err));
-  }, []);
 
   const submit = (credentials) => {
     console.log(credentials);
