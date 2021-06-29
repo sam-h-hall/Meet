@@ -10,7 +10,7 @@ const TitleBar = () => {
         </h1>
       </Link>
       <nav className="pr-2">
-        <Link className="font-josefinSans" to="/login">
+        <Link className="text-white font-josefinSans" to="/login">
           Login
         </Link>
       </nav>
