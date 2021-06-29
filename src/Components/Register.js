@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Link } from "react-router-dom";
 import * as yup from "yup";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const [loggedIn, setLoggedIn] = useState([]);
+  //const [existingUser, setExistingUser] = useState(true);
   const inputStyle = "border-2 border-gray-200 w-60 rounded-md pl-1";
   const errorStyle = "text-red-500 text-sm";
 
@@ -122,9 +123,17 @@ const Register = () => {
         </div>
 
         <button className="bg-blue-400 w-60 rounded-md mb-1" type="submit">
-          Login
+          Register
         </button>
       </form>
+      <div>
+        <p>
+          Already a member?{" "}
+          <Link className="underline" to="/login">
+            Login
+          </Link>
+        </p>
+      </div>
     </div>
   );
 };
