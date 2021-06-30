@@ -1,13 +1,19 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
-import { createStore } from "redux";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router } from "react-router-dom";
+import { connect, Provider } from "react-redux";
+import store from "./state-management/store"
 
-const store = createStore({}); // add reducer here
+const mapState = state => state;
+const actionCreators = {}
+
+//const ConnectedApp = connect(
+  //mapState,
+  //actionCreators,
+//)(App);
 
 ReactDOM.render(
   <React.StrictMode>
