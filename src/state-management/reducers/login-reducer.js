@@ -13,7 +13,8 @@ export const userSlice = createSlice({
   reducers: {
     login: (state, action) => {
       console.log("login reducer firing")
-      state.user = action.payload
+      state.user = action.payload.user
+      localStorage.setItem("authToken", action.payload.token)
     },
   },
 });
