@@ -35,11 +35,11 @@ const Login = () => {
     if (credentials) {
       Axios.post("http://localhost:8000/login", credentials)
         .then((res) => {
-          console.log(login(res.data.user))
-          console.log("log res \n", res);
-          console.log(credentials);
+          //console.log(login(res.data.user))
+          console.log("log res ", res.data);
+          dispatch(login(res.data));
           //useDispatch(credentials);
-          console.log( "hey ", dispatch(login(res.data.user)));
+          //console.log( "hey ", dispatch(login(res.data)));
           //console.log(user)
         })
         .catch((err) => {
