@@ -1,17 +1,17 @@
-import { useState } from "react";
+//import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Axios from "axios";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useSelector, useDispatch } from "react-redux";
+import { /* useSelector,*/ useDispatch } from "react-redux";
 import { login } from "../state-management/reducers/login-reducer";
 
 const Login = () => {
   const inputStyle = "border-2 border-gray-200 w-60 rounded-md pl-1";
   const errorStyle = "text-red-500 text-sm";
 
-  const user = useSelector((state) => state.user);
+  //const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const validationSchema = yup.object().shape({
@@ -22,7 +22,6 @@ const Login = () => {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm({
     mode: "onTouched",
@@ -31,16 +30,11 @@ const Login = () => {
   });
 
   const submit = (credentials, e) => {
-    //e.preventDefault()
+    e.preventDefault();
     if (credentials) {
       Axios.post("http://localhost:8000/login", credentials)
         .then((res) => {
-          //console.log(login(res.data.user))
-          console.log("log res ", res.data);
           dispatch(login(res.data));
-          //useDispatch(credentials);
-          //console.log( "hey ", dispatch(login(res.data)));
-          //console.log(user)
         })
         .catch((err) => {
           console.log("login err \n", err);
@@ -76,6 +70,7 @@ const Login = () => {
         <div className="mb-4">
           <input
             className={inputStyle}
+            type="password"
             contentEditable="true"
             placeholder="password"
             {...register("password", {
