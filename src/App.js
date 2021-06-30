@@ -44,7 +44,9 @@ function App() {
       {/*<MessageInterface socket={socket} messageStream={messageStream} />*/}
 
       <Switch>
-        <Route path="/login" component={Login} />
+        <Route path="/login">
+          <Login />
+        </Route>
         <Route path="/register" component={Register} />
         <Route exact path="/">
           <MessageInterface socket={socket} messageStream={messageStream} />

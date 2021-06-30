@@ -4,8 +4,16 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router } from "react-router-dom";
-import { Provider } from "react-redux";
+import { connect, Provider } from "react-redux";
 import store from "./state-management/store"
+
+const mapState = state => state;
+const actionCreators = {}
+
+//const ConnectedApp = connect(
+  //mapState,
+  //actionCreators,
+//)(App);
 
 ReactDOM.render(
   <React.StrictMode>

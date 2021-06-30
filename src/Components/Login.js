@@ -4,11 +4,15 @@ import Axios from "axios";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useSelector, useDispatch } from "react-redux";
+import { login } from "../state-management/reducers/login-reducer";
 
 const Login = () => {
-  const [loggedIn, setLoggedIn] = useState([]);
   const inputStyle = "border-2 border-gray-200 w-60 rounded-md pl-1";
   const errorStyle = "text-red-500 text-sm";
+
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const validationSchema = yup.object().shape({
     username: yup.string().required("*username required"),
@@ -26,11 +30,17 @@ const Login = () => {
     defaultValues: { username: "", password: "" },
   });
 
-  const submit = (credentials) => {
+  const submit = (credentials, e) => {
+    //e.preventDefault()
     if (credentials) {
       Axios.post("http://localhost:8000/login", credentials)
         .then((res) => {
+          console.log(login(res.data.user))
           console.log("log res \n", res);
+          console.log(credentials);
+          //useDispatch(credentials);
+          console.log( "hey ", dispatch(login(res.data.user)));
+          //console.log(user)
         })
         .catch((err) => {
           console.log("login err \n", err);
