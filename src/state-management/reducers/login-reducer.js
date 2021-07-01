@@ -1,10 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 // With this, I'm wanting to grab all of the user's data and store it in one object
 
 export const userSlice = createSlice({
-  name: "user",
+  name: "activeUser",
   initialState: {
-    user: {
+    activeUser: {
       _id: "",
       username: "",
       email: "",
@@ -12,12 +12,16 @@ export const userSlice = createSlice({
   },
   reducers: {
     login: (state, action) => {
-      console.log("login reducer firing")
-      state.user = action.payload.user
+      console.log("payload: ", action.payload)
       localStorage.setItem("authToken", action.payload.token)
+      state.activeUser = action.payload.user
     },
+    
   },
 });
+
+//export const fetchActiveUser = (state) => createSelector(
+//)
 
 export const { login } = userSlice.actions;
 export default userSlice.reducer

@@ -1,15 +1,17 @@
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../state-management/state-slices/user-slice";
 
 const Register = () => {
-  const [loggedIn, setLoggedIn] = useState([]);
-  //const [existingUser, setExistingUser] = useState(true);
   const inputStyle = "border-2 border-gray-200 w-60 rounded-md pl-1";
   const errorStyle = "text-red-500 text-sm";
+
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const validationSchema = yup.object().shape({
     username: yup.string().required("*username required"),
@@ -32,7 +34,7 @@ const Register = () => {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitSuccessful, isSubmitting },
+    formState: { errors /*isSubmitSuccessful, isSubmitting */ },
   } = useForm({
     mode: "onTouched",
     resolver: yupResolver(validationSchema),
@@ -45,7 +47,12 @@ const Register = () => {
       // add some spinning wheel or something while isSubmitting is true, reset and
       // redirect if successful --> don't want to reset if it is not successful
       Axios.post("http://localhost:8000/register", credentials)
-        .then((res) => console.log("res ", res.data))
+        .then((res) => {
+          console.log("res ", res.data);
+          dispatch(login(res.data));
+          reset();
+          history.push("/");
+        })
         .catch((err) =>
           console.log(
             "Post err: ",

@@ -33,17 +33,13 @@ function App() {
     });
 
     socket.on("message", (incomingMsg) => {
-      console.log(incomingMsg);
       setMessageStream([...messageStream, incomingMsg]);
-      console.log(messageStream);
     });
   }, [socket, messageStream]);
 
   return (
     <div>
-      {/*<Login /> */}
       <TitleBar />
-      {/*<MessageInterface socket={socket} messageStream={messageStream} />*/}
       <Switch>
         <Route path="/login">
           <Login />

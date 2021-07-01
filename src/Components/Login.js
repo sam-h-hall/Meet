@@ -1,4 +1,3 @@
-//import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Axios from "axios";
 import { Link } from "react-router-dom";
@@ -12,7 +11,6 @@ const Login = () => {
   const inputStyle = "border-2 border-gray-200 w-60 rounded-md pl-1";
   const errorStyle = "text-red-500 text-sm";
 
-  //const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
 
