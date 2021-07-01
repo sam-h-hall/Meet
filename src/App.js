@@ -11,12 +11,11 @@ function App() {
   const [socket, setSocket] = useState(null);
   const [socketConnected, setSocketConnected] = useState(false);
   const [messageStream, setMessageStream] = useState([]);
-  const token = localStorage.getItem("authToken")
-
+  const token = localStorage.getItem("authToken");
 
   useEffect(() => {
     if (localStorage.getItem("authToken")) {
-      setSocket(io("localhost:8000/"));
+      setSocket(io("localhost:8000/", { query: {token} }));
     }
   }, [token]);
 
@@ -24,6 +23,7 @@ function App() {
     if (!socket) return;
 
     socket.on("connect", () => {
+      console.log("connected")
       setSocketConnected(socket.connected);
     });
 
@@ -38,8 +38,6 @@ function App() {
       console.log(messageStream);
     });
   }, [socket, messageStream]);
-
-  console.log(socketConnected);
 
   return (
     <div>

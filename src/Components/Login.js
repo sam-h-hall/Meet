@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch } from "react-redux";
-import { login } from "../state-management/reducers/login-reducer";
+import { login } from "../state-management/state-slices/user-slice";
 import { useHistory } from "react-router";
 
 const Login = () => {
@@ -34,13 +34,14 @@ const Login = () => {
   const submit = (credentials, e) => {
     e.preventDefault();
     if (credentials) {
-      Axios.post("http://localhost:8000/login", credentials)
+      Axios.post("http://localhost:8000/login", {...credentials})
         .then((res) => {
+          console.log(res.data.user)
           dispatch(login(res.data));
           history.push("/")
         })
         .catch((err) => {
-          console.log("login err \n", err);
+          console.log("login err \n", err );
         });
     } else {
       return;

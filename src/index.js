@@ -4,23 +4,21 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router } from "react-router-dom";
-import { connect, Provider } from "react-redux";
-import store from "./state-management/store"
+import { Provider } from "react-redux";
+import store from "./state-management/store";
+import { PersistGate } from "redux-persist/integration/react";
+import { persistStore } from "redux-persist";
 
-const mapState = state => state;
-const actionCreators = {}
-
-//const ConnectedApp = connect(
-  //mapState,
-  //actionCreators,
-//)(App);
+let persistor = persistStore(store);
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <Router>
-        <App />
-      </Router>
+      <PersistGate loading={null} persistor={persistor}>
+        <Router>
+          <App />
+        </Router>
+      </PersistGate>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")
