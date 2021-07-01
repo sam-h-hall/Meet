@@ -4,8 +4,9 @@ import Axios from "axios";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { /* useSelector,*/ useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { login } from "../state-management/reducers/login-reducer";
+import { useHistory } from "react-router";
 
 const Login = () => {
   const inputStyle = "border-2 border-gray-200 w-60 rounded-md pl-1";
@@ -13,6 +14,7 @@ const Login = () => {
 
   //const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const validationSchema = yup.object().shape({
     username: yup.string().required("*username required"),
@@ -35,6 +37,7 @@ const Login = () => {
       Axios.post("http://localhost:8000/login", credentials)
         .then((res) => {
           dispatch(login(res.data));
+          history.push("/")
         })
         .catch((err) => {
           console.log("login err \n", err);
