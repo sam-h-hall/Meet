@@ -1,6 +1,9 @@
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 
 const MessageBar = ({ socket }) => {
+  const dispatch = useDispatch();
+
   const {
     register,
     handleSubmit,
