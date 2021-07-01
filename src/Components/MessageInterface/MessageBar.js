@@ -10,7 +10,8 @@ const MessageBar = ({ socket }) => {
 
   const submit = ({ message }) => {
     if (message) {
-      console.log("chat message: ", message);
+      if (!socket) return;
+
       socket.emit("chat message", message);
       reset({ message: "" });
     } else {

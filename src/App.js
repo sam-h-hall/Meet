@@ -4,17 +4,21 @@ import io from "socket.io-client";
 import MessageInterface from "./Components/MessageInterface/MessageInterface";
 import TitleBar from "./Components/TitleBar";
 import Login from "./Components/Login";
-import { Route, Switch, Link } from "react-router-dom";
+import { PrivateRoute, Route, Switch, Link } from "react-router-dom";
 import Register from "./Components/Register";
 
 function App() {
   const [socket, setSocket] = useState(null);
   const [socketConnected, setSocketConnected] = useState(false);
   const [messageStream, setMessageStream] = useState([]);
+  const token = localStorage.getItem("authToken")
+
 
   useEffect(() => {
-    setSocket(io("localhost:8000/"));
-  }, []);
+    if (localStorage.getItem("authToken")) {
+      setSocket(io("localhost:8000/"));
+    }
+  }, [token]);
 
   useEffect(() => {
     if (!socket) return;
@@ -42,7 +46,6 @@ function App() {
       {/*<Login /> */}
       <TitleBar />
       {/*<MessageInterface socket={socket} messageStream={messageStream} />*/}
-
       <Switch>
         <Route path="/login">
           <Login />
