@@ -21,7 +21,11 @@ const MessageBar: React.FC<MessageBarProps> = ({ socket }) => {
     if (message) {
       if (!socket) return;
 
-      socket.emit("chat message", { message, from: activeUser._id });
+      socket.emit("chat message", {
+        message,
+        from: activeUser.username,
+        from_id: activeUser._id,
+      });
       reset({ message: "" });
     } else {
       return;
