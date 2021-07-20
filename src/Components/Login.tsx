@@ -29,20 +29,13 @@ const Login: React.FC = () => {
   });
 
   const submit: any = (
-    e: any,
-    credentials: { username: string; password: string }
+    credentials: { username: string; password: string },
+    e: any
   ) => {
     e.preventDefault();
     if (credentials) {
-      Axios.post("http://localhost:8000/login", { ...credentials })
-        .then((res) => {
-          console.log(res.data.user);
-          dispatch(login(res.data));
-          history.push("/");
-        })
-        .catch((err) => {
-          console.log("login err: \n", err);
-        });
+      dispatch(login(credentials));
+      history.push("/");
     }
   };
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import io, {Socket} from "socket.io-client";
+import io, { Socket } from "socket.io-client";
 import MessageInterface from "./Components/MessageInterface/MessageInterface";
 import TitleBar from "./Components/TitleBar";
 import Login from "./Components/Login";
@@ -16,16 +16,15 @@ function App() {
 
   useEffect(() => {
     if (activeUser) {
-      // replace this with some error and redirect -- don't want to risk this happening
+      console.log("active user: ", activeUser); // replace this with some error and redirect -- don't want to risk this happening
       let token: string = localStorage.getItem("authToken") || "";
 
-      setSocket(io("localhost:8000/", { query: {token} }));
+      setSocket(io("localhost:8000", { query: { token } }));
     }
-  }, [activeUser])
+  }, [activeUser]);
 
   useEffect(() => {
     if (!socket) return;
-    console.log(messageStream);
 
     socket.on("connect", () => {
       console.log("connected");
@@ -36,12 +35,18 @@ function App() {
       console.log("disconnected");
       setSocketConnected(socket.connected);
     });
-
-    socket.on("message", (incomingMsg) => {
-      setMessageStream([...messageStream, incomingMsg]);
-    });
   }, [socket, messageStream]);
-  
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("message", (incomingMsg) => {
+        console.log(incomingMsg);
+        setMessageStream([...messageStream, incomingMsg]);
+        console.log(messageStream);
+      });
+    }
+  }, [socket]);
+
   return (
     <div>
       <TitleBar />

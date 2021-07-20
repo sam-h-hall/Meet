@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
+import Axios from "axios";
 
 export interface ActiveUser {
-  _id: number,
-  username: string,
-  email: string,
+  _id: number;
+  username: string;
+  email: string;
 }
 
 const activeUser: ActiveUser = { _id: 0, username: "", email: "" };
@@ -11,14 +12,19 @@ const activeUser: ActiveUser = { _id: 0, username: "", email: "" };
 export const userSlice = createSlice({
   name: "activeUser",
   initialState: {
-    activeUser
+    activeUser,
   },
   reducers: {
-    // may need to change action to action: PayloadAction<some type>
     login: (state, action) => {
-      console.log("payload: ", action.payload);
-      localStorage.setItem("authToken", action.payload.token);
-      state.activeUser = action.payload.user;
+      console.log(action.payload);
+      Axios.post("http://localhost:8000/login", action.payload)
+        .then((res) => {
+          localStorage.setItem("authToken", res.data.token);
+          state.activeUser = res.data.user;
+        })
+        .catch((err) => {
+          console.log("login err: ", err, "\n", action.payload);
+        });
     },
   },
 });
