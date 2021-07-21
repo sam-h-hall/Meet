@@ -34,8 +34,17 @@ const Login: React.FC = () => {
   ) => {
     e.preventDefault();
     if (credentials) {
-      dispatch(login(credentials));
-      history.push("/");
+      Axios.post("http://localhost:8000/login", credentials)
+        .then((res) => {
+          dispatch(login(res.data.user));
+          if (res.data.token) {
+            localStorage.setItem("authToken", res.data.token);
+            history.push("/");
+          }
+        })
+        .catch((err) => {
+          console.log("login error", err);
+        });
     }
   };
 
