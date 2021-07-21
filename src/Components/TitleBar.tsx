@@ -1,12 +1,16 @@
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
+import { useDispatch } from "react-redux";
+import { resetAction } from "../state-management/store";
 
 const TitleBar = () => {
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const logout = () => {
     console.log("logout");
     localStorage.removeItem("authToken");
+    dispatch(resetAction());
     history.push("/login");
   };
   return (
