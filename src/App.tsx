@@ -7,21 +7,21 @@ import Login from "./Components/Login";
 import { Route, Switch, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Register from "./Components/Register";
+import { recordMessage } from "./state-management/state-slices/message-slice";
 
 function App() {
   const [socket, setSocket] = useState<Socket | undefined>(undefined);
   const [socketConnected, setSocketConnected] = useState<boolean>(false);
   const [messageStream, setMessageStream] = useState<any>([]);
-  const { activeUser }: any = useSelector((state: any) => state.user);
+  //const { activeUser }: any = useSelector((state: any) => state.user);
 
   useEffect(() => {
-    if (activeUser) {
-      console.log("active user: ", activeUser); // replace this with some error and redirect -- don't want to risk this happening
-      let token: string = localStorage.getItem("authToken") || "";
-
+    let token: string | undefined =
+      localStorage.getItem("authToken") || undefined;
+    if (token) {
       setSocket(io("localhost:8000", { query: { token } }));
     }
-  }, [activeUser]);
+  }, []);
 
   useEffect(() => {
     if (!socket) return;
@@ -41,8 +41,8 @@ function App() {
     if (socket) {
       socket.on("message", (incomingMsg) => {
         console.log(incomingMsg);
+        recordMessage(incomingMsg);
         setMessageStream([...messageStream, incomingMsg]);
-        console.log(messageStream);
       });
     }
   }, [socket]);

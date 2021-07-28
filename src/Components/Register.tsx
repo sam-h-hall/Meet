@@ -57,12 +57,7 @@ const Register = () => {
           history.push("/");
         })
         .catch((err) =>
-          console.log(
-            "Register post error: ",
-            err.response.status,
-            "\n",
-            err.response.data.error
-          )
+          console.log("Register post error: ", err.err, "\n", err)
         );
     } else {
       console.log("Fields missing");
@@ -136,7 +131,10 @@ const Register = () => {
       </form>
       <div>
         <p>
-          Already a member? <Link className="underline" to="/register">Login</Link>
+          Already a member?{" "}
+          <Link className="underline" to="/register">
+            Login
+          </Link>
         </p>
       </div>
     </div>

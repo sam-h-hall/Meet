@@ -1,14 +1,14 @@
 import { Socket } from "socket.io-client";
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
+//import { useDispatch, useSelector } from "react-redux";
 
 interface MessageBarProps {
   socket: Socket | undefined;
 }
 
 const MessageBar: React.FC<MessageBarProps> = ({ socket }) => {
-  const dispatch = useDispatch();
-  const { activeUser }: any = useSelector<any>((state) => state.user);
+  //const dispatch = useDispatch();
+  //const { activeUser }: any = useSelector<any>((state) => state.user);
 
   const {
     register,
@@ -23,8 +23,8 @@ const MessageBar: React.FC<MessageBarProps> = ({ socket }) => {
 
       socket.emit("chat message", {
         message,
-        from: activeUser.username,
-        from_id: activeUser._id,
+        //from: activeUser.username,
+        from_id: "filler",
       });
       reset({ message: "" });
     } else {
@@ -51,6 +51,7 @@ const MessageBar: React.FC<MessageBarProps> = ({ socket }) => {
         <button
           className="text-red-50 bg-blue-500 w-20 rounded-md"
           type="submit"
+          //disabled={errors ? console.log(errors) : false}
         >
           Send
         </button>
