@@ -8,13 +8,17 @@ import thunk from "redux-thunk";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import userSlice from "./state-slices/user-slice";
+import publicMessageSlice from "./state-slices/message-slice";
 const persistConfig = {
   key: "root",
   storage,
 };
 
+console.log("pm sl ", publicMessageSlice);
+
 const reducers = combineReducers({
   user: userSlice,
+  message: publicMessageSlice,
 });
 
 export const resetAction: any = createAction("reset");

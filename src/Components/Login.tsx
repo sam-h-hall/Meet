@@ -1,17 +1,15 @@
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Axios from "axios";
-import { login } from "../state-management/state-slices/user-slice";
+import { gql } from "@apollo/client";
+import { client } from "../index";
 
 const Login: React.FC = () => {
+  const history = useHistory();
+
   const inputStyle = "border-2 border-gray-200 w-60 rounded-md pl-1";
   const errorStyle = "text-red-500 text-sm";
-
-  const dispatch = useDispatch();
-  const history = useHistory();
 
   const validationSchema = yup.object().shape({
     username: yup.string().required("*username required"),
@@ -28,24 +26,41 @@ const Login: React.FC = () => {
     defaultValues: { username: "", password: "" },
   });
 
-  const submit: any = (
+  // graphql mutation
+  const LOGIN = gql`
+    mutation LoginMutation($loginUsername: String!, $loginPassword: String!) {
+      login(username: $loginUsername, password: $loginPassword) {
+        user {
+          username
+          email
+        }
+        token
+      }
+    }
+  `;
+
+  const Submit: any = (
     credentials: { username: string; password: string },
     e: any
   ) => {
     e.preventDefault();
-    if (credentials) {
-      Axios.post("http://localhost:8000/login", credentials)
-        .then((res) => {
-          dispatch(login(res.data.user));
-          if (res.data.token) {
-            localStorage.setItem("authToken", res.data.token);
-            history.push("/");
-          }
-        })
-        .catch((err) => {
-          console.log("login error", err);
-        });
-    }
+    client
+      .mutate({
+        variables: {
+          loginUsername: credentials.username,
+          loginPassword: credentials.password,
+        },
+        mutation: LOGIN,
+      })
+      .then((res) => {
+        console.log(res);
+        localStorage.setItem("authToken", res.data.login.token);
+        history.push("/");
+      })
+      .catch((err) => {
+        // display login err on failed login
+        console.log(err);
+      });
   };
 
   return (
@@ -55,7 +70,7 @@ const Login: React.FC = () => {
       </h1>
       <form
         className="h-auto flex flex-col justify-between border-l-2 border-r-2 border-b-2 items-center w-80 rounded-b-md pt-3"
-        onSubmit={handleSubmit(submit)}
+        onSubmit={handleSubmit(Submit)}
       >
         <div className="mb-4">
           <input

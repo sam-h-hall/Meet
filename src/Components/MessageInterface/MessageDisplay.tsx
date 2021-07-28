@@ -4,20 +4,16 @@ import { useState, useEffect } from "react";
 import Message from "./Message";
 
 interface MessageDisplayProps {
-  messageStream: any;
+  messageStream: [];
 }
-
-type UserActive = {
-  _id: number;
-  username: string;
-  email: string;
-};
 
 const MessageDisplay: React.FC<MessageDisplayProps> = ({ messageStream }) => {
   const [messagesToDisplay, setMessagesToDisplay] = useState<boolean>(false);
+  //const { publicMessages }: any = useSelector((state) => state);
   //const { activeUser }: any = useSelector<any>((state) => state.user);
 
   useEffect(() => {
+    //console.log("redux pub messages ", publicMessages);
     if (messageStream.length > 0) {
       setMessagesToDisplay(true);
     } else {
@@ -34,12 +30,15 @@ const MessageDisplay: React.FC<MessageDisplayProps> = ({ messageStream }) => {
 };
 
 const ShowMessages: React.FC<MessageDisplayProps> = ({ messageStream }) => {
+  console.log(messageStream);
   return (
     <div className="flex align-bottom overflow-auto">
       <ul className="flex flex-col w-full max-w-full">
-        {messageStream.map((incomingMsg: { from: string; message: string }) => (
-          <Message incomingMsg={incomingMsg} key={Math.random()} />
-        ))}
+        {messageStream.map(
+          (incomingMsg: { from_id: string; message: string }) => (
+            <Message incomingMsg={incomingMsg} key={Math.random()} />
+          )
+        )}
       </ul>
     </div>
   );
