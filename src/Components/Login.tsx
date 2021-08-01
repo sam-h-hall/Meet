@@ -31,6 +31,7 @@ const Login: React.FC = () => {
     mutation LoginMutation($loginUsername: String!, $loginPassword: String!) {
       login(username: $loginUsername, password: $loginPassword) {
         user {
+          _id
           username
           email
         }
@@ -39,11 +40,7 @@ const Login: React.FC = () => {
     }
   `;
 
-  const Submit: any = (
-    credentials: { username: string; password: string },
-    e: any
-  ) => {
-    e.preventDefault();
+  const Submit = (credentials: { username: string; password: string }) => {
     client
       .mutate({
         variables: {
@@ -53,13 +50,11 @@ const Login: React.FC = () => {
         mutation: LOGIN,
       })
       .then((res) => {
-        console.log(res);
         localStorage.setItem("authToken", res.data.login.token);
         history.push("/");
       })
       .catch((err) => {
-        // display login err on failed login
-        console.log(err);
+        console.log(err.message);
       });
   };
 

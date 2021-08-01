@@ -1,16 +1,14 @@
 import { useForm } from "react-hook-form";
-import Axios from "axios";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Link, useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { login } from "../state-management/state-slices/user-slice";
+import { gql } from "@apollo/client";
+import { client } from "../index";
 
 const Register = () => {
   const inputStyle = "border-2 border-gray-200 w-60 rounded-md pl-1";
   const errorStyle = "text-red-500 text-sm";
 
-  const dispatch = useDispatch();
   const history = useHistory();
 
   const validationSchema = yup.object().shape({
@@ -33,7 +31,6 @@ const Register = () => {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm({
     mode: "onTouched",
@@ -41,27 +38,50 @@ const Register = () => {
     defaultValues: { ...initialValues },
   });
 
-  const submit = (credentials: {
+  const REGISTER = gql`
+    mutation RegisterMutation(
+      $registerUsername: String!
+      $registerEmail: String!
+      $registerPassword: String!
+      $registerPasswordRpt: String!
+    ) {
+      register(
+        username: $registerUsername
+        email: $registerEmail
+        password: $registerPassword
+        passwordRpt: $registerPasswordRpt
+      ) {
+        user {
+          _id
+          username
+          email
+        }
+        token
+      }
+    }
+  `;
+
+  const Submit = (credentials: {
     username: string;
     email: string;
     password: string;
     pwdRepeat: string;
   }) => {
-    console.log(credentials);
-    if (credentials) {
-      Axios.post("http://localhost:8000/register", credentials)
-        .then((res) => {
-          console.log("res ", res.data);
-          dispatch(login(res.data));
-          reset();
-          history.push("/");
-        })
-        .catch((err) =>
-          console.log("Register post error: ", err.err, "\n", err)
-        );
-    } else {
-      console.log("Fields missing");
-    }
+    client
+      .mutate({
+        variables: {
+          registerUsername: credentials.username,
+          registerEmail: credentials.email,
+          registerPassword: credentials.password,
+          registerPasswordRpt: credentials.pwdRepeat,
+        },
+        mutation: REGISTER,
+      })
+      .then((res) => {
+        localStorage.setItem("authToken", res.data.register.token);
+        history.push("/");
+      })
+      .catch((err) => console.log({ ...err }));
   };
 
   return (
@@ -71,7 +91,7 @@ const Register = () => {
       </h1>
       <form
         className="h-auto flex flex-col justify-between border-l-2 border-r-2 border-b-2 items-center w-80 rounded-b-md pt-3"
-        onSubmit={handleSubmit(submit)}
+        onSubmit={handleSubmit(Submit)}
       >
         <div className="mb-4">
           <input
@@ -132,7 +152,7 @@ const Register = () => {
       <div>
         <p>
           Already a member?{" "}
-          <Link className="underline" to="/register">
+          <Link className="underline" to="/login">
             Login
           </Link>
         </p>
